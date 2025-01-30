@@ -1,5 +1,6 @@
 package com.kipper.frit_project_app.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kipper.frit_project_app.entities.pk.OrderItemPK;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -13,7 +14,7 @@ public class OrderItem implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId
-    private OrderItemPK id;
+    private final OrderItemPK id = new OrderItemPK();
 
     private Integer quantity;
     private Double price;
@@ -29,6 +30,7 @@ public class OrderItem implements java.io.Serializable {
         this.price = price;
     }
 
+    @JsonIgnore
     public Order getOrder() {
         return id.getOrder();
     }
@@ -44,8 +46,6 @@ public class OrderItem implements java.io.Serializable {
     private void setProduct(Product product) {
         id.setProduct(product);
     }
-
-
 
     public Integer getQuantity() {
         return quantity;
