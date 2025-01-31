@@ -1,7 +1,6 @@
 package com.kipper.frit_project_app.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kipper.frit_project_app.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 
@@ -32,6 +31,9 @@ public class Order implements java.io.Serializable {
 
     @OneToMany(mappedBy = "id.order")
     private Set<OrderItem> items = new HashSet<>();
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
 
     public Order() {}
 
@@ -79,6 +81,14 @@ public class Order implements java.io.Serializable {
     public Set<OrderItem> getItems() {
         return items;
     }
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
 
     @Override
     public boolean equals(Object o) {
