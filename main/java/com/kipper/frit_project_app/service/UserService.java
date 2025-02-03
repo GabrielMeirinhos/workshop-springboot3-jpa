@@ -2,6 +2,8 @@ package com.kipper.frit_project_app.service;
 
 import com.kipper.frit_project_app.entities.User;
 import com.kipper.frit_project_app.repositories.UserRepository;
+import com.kipper.frit_project_app.service.exception.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 
@@ -23,7 +25,11 @@ public class UserService {
 
     public User findById(Long id) {
         Optional<User> obj = repository.findById(id);
-        return obj.get();
+        try {
+            return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+        } catch (ResourceNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public User insert(User user) {
