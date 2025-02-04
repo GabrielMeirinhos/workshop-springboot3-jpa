@@ -2,8 +2,10 @@ package com.kipper.frit_project_app.service;
 
 import com.kipper.frit_project_app.entities.User;
 import com.kipper.frit_project_app.repositories.UserRepository;
+import com.kipper.frit_project_app.service.exception.DatabaseException;
 import com.kipper.frit_project_app.service.exception.ResourceNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 
@@ -25,11 +27,8 @@ public class UserService {
 
     public User findById(Long id) {
         Optional<User> obj = repository.findById(id);
-        try {
-            return obj.orElseThrow(() -> new ResourceNotFoundException(id));
-        } catch (ResourceNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+
     }
 
     public User insert(User user) {
@@ -37,7 +36,19 @@ public class UserService {
     }
 
     public void deleteById(Long id) {
-        repository.deleteById(id);
+
+
+
+            try{
+                if (!repository.existsById(id)) {
+                throw new ResourceNotFoundException(id);
+                }
+                repository.deleteById(id);
+            }catch (EmptyResultDataAccessException e){
+                 throw new ResourceNotFoundException(id);
+            }catch (DataIntegrityViolationException e){
+                throw new DatabaseException(e.getMessage());
+            }
     }
 
     public User update(Long id, User user) {
