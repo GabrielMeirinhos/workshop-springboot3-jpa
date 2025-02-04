@@ -4,6 +4,7 @@ import com.kipper.frit_project_app.entities.User;
 import com.kipper.frit_project_app.repositories.UserRepository;
 import com.kipper.frit_project_app.service.exception.DatabaseException;
 import com.kipper.frit_project_app.service.exception.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -52,9 +53,13 @@ public class UserService {
     }
 
     public User update(Long id, User user) {
-        User entity =  repository.getReferenceById(id);
-        updateData(entity, user);
-        return repository.save(entity);
+        try {
+            User entity = repository.getReferenceById(id);
+            updateData(entity, user);
+            return repository.save(entity);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     private void updateData(User entity, User user) {
