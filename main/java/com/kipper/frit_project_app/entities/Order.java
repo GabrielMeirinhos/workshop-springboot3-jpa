@@ -2,6 +2,7 @@ package com.kipper.frit_project_app.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.kipper.frit_project_app.entities.enums.OrderStatus;
+import com.kipper.frit_project_app.entities.user.User;
 import jakarta.persistence.*;
 
 import java.io.Serial;

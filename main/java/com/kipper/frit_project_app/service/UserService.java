@@ -1,6 +1,7 @@
 package com.kipper.frit_project_app.service;
 
-import com.kipper.frit_project_app.entities.User;
+import com.kipper.frit_project_app.entities.user.RegisterDTO;
+import com.kipper.frit_project_app.entities.user.User;
 import com.kipper.frit_project_app.repositories.UserRepository;
 import com.kipper.frit_project_app.service.exception.DatabaseException;
 import com.kipper.frit_project_app.service.exception.ResourceNotFoundException;
@@ -33,13 +34,14 @@ public class UserService {
     }
 
     public User insert(User user) {
+        if (user.getPassword().length() < 8) {
+            throw new IllegalArgumentException();
+        }
         return repository.save(user);
     }
 
+
     public void deleteById(Long id) {
-
-
-
             try{
                 if (!repository.existsById(id)) {
                 throw new ResourceNotFoundException(id);
@@ -48,7 +50,7 @@ public class UserService {
             }catch (EmptyResultDataAccessException e){
                  throw new ResourceNotFoundException(id);
             }catch (DataIntegrityViolationException e){
-                throw new DatabaseException(e.getMessage());
+                throw new DatabaseException(e.toString());
             }
     }
 

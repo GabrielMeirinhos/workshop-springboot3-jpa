@@ -1,9 +1,7 @@
 package com.kipper.frit_project_app.service;
 
 import com.kipper.frit_project_app.entities.Category;
-import com.kipper.frit_project_app.entities.User;
 import com.kipper.frit_project_app.repositories.CategoryRepository;
-import com.kipper.frit_project_app.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

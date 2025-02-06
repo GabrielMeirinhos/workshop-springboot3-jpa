@@ -1,8 +1,8 @@
 package com.kipper.frit_project_app.resources;
 
-import com.kipper.frit_project_app.entities.User;
+import com.kipper.frit_project_app.entities.user.User;
 import com.kipper.frit_project_app.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -33,7 +33,7 @@ public class UserResource {
     }
 
     @PostMapping
-    public ResponseEntity<User> insert(@RequestBody User user) {
+    public ResponseEntity<User> insert(@RequestBody @Valid User user) {
         user = userService.insert(user);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(user);

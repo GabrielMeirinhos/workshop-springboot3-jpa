@@ -1,6 +1,7 @@
 package com.kipper.frit_project_app.resources.exceptions;
 
 import com.kipper.frit_project_app.service.exception.DatabaseException;
+import com.kipper.frit_project_app.service.exception.IllegalArgException;
 import com.kipper.frit_project_app.service.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,15 @@ public class ResourceExceptionHandler {
 
     @ExceptionHandler(DatabaseException.class)
     public ResponseEntity<StandardError> database(DatabaseException e, HttpServletRequest request) {
-        String error = "Database error";
+        String error = "Cannot delete the user as it has dependencies";
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(IllegalArgException.class)
+    public ResponseEntity<StandardError> illegalArgException(IllegalArgumentException e, HttpServletRequest request) {
+        String error = "Illegal argument";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
