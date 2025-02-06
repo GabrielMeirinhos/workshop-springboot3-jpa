@@ -32,13 +32,11 @@ public class ResourceExceptionHandler {
     }
 
     @ExceptionHandler(IllegalArgException.class)
-    public ResponseEntity<StandardError> illegalArgException(IllegalArgumentException e, HttpServletRequest request) {
-        String error = "Illegal argument";
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+    public ResponseEntity<StandardError> illegalArgException(IllegalArgException e, HttpServletRequest request) {
+        String error = "Argumento inválido";
+        HttpStatus status = HttpStatus.BAD_REQUEST; // 400
+        StandardError err = new StandardError(Instant.now(), status.value(), error,e.getMessage(),request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
-
-
 }
 

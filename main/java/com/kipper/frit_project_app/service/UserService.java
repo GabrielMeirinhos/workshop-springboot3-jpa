@@ -33,12 +33,12 @@ public class UserService {
 
     }
 
-    public User insert(User user) {
-        if (user.getPassword().length() < 8) {
-            throw new IllegalArgumentException();
-        }
-        return repository.save(user);
-    }
+//    public User insert(User user) {
+//        if (user.getPassword().length() < 8) {
+//            throw new IllegalArgumentException();
+//        }
+//        return repository.save(user);
+//    }
 
 
     public void deleteById(Long id) {

@@ -46,8 +46,10 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO user){
-             ResponseEntity<RegisterDTO> responseEntity = registerService.register(user);
-        return responseEntity.ok().build();
+    public ResponseEntity register(@RequestBody @Valid RegisterDTO dto){
+             User user = registerService.register(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
+            return ResponseEntity.created(uri).body(user);
+
     }
 }

@@ -6,10 +6,11 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public record RegisterDTO (
+public record RegisterDTO(
         Long id,
-       @NotBlank @Email String email,
-       @NotBlank String name,
-       @NotBlank @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$") String password,
-       @NotBlank String phone,
-        UserRole role) {}
+        String email,
+        String name,
+        String password,
+        String phone,
+        UserRole role) {
+}
