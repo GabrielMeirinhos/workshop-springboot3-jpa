@@ -1,6 +1,7 @@
 package com.kipper.frit_project_app.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.kipper.frit_project_app.entities.dto.OrderItemDTO;
 import com.kipper.frit_project_app.entities.enums.OrderStatus;
 import com.kipper.frit_project_app.entities.user.User;
 import jakarta.persistence.*;
@@ -10,6 +11,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "tb_order")
@@ -82,6 +84,11 @@ public class Order implements java.io.Serializable {
     public Set<OrderItem> getItems() {
         return items;
     }
+
+    public Set<OrderItemDTO> getItemsDTO() {
+        return items.stream().map(OrderItemDTO::new).collect(Collectors.toSet());
+    }
+
     public void setPayment(Payment payment) {
         this.payment = payment;
     }

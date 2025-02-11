@@ -1,9 +1,6 @@
 package com.kipper.frit_project_app.resources;
 
-import com.kipper.frit_project_app.entities.user.AuthenticationDTO;
-import com.kipper.frit_project_app.entities.user.LoginResponseDTO;
-import com.kipper.frit_project_app.entities.user.RegisterDTO;
-import com.kipper.frit_project_app.entities.user.User;
+import com.kipper.frit_project_app.entities.user.*;
 import com.kipper.frit_project_app.repositories.UserRepository;
 import com.kipper.frit_project_app.service.RegisterService;
 import com.kipper.frit_project_app.service.TokenService;
@@ -49,7 +46,8 @@ public class AuthController {
     public ResponseEntity register(@RequestBody @Valid RegisterDTO dto){
              User user = registerService.register(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
-            return ResponseEntity.created(uri).body(user);
+
+            return ResponseEntity.created(uri).body(new UserDTO(user));
 
     }
 }

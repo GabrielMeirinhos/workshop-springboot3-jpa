@@ -1,9 +1,11 @@
 package com.kipper.frit_project_app.service;
 
-import com.kipper.frit_project_app.entities.user.RegisterDTO;
 import com.kipper.frit_project_app.entities.user.User;
+import com.kipper.frit_project_app.entities.user.UserDTO;
 import com.kipper.frit_project_app.repositories.UserRepository;
 import com.kipper.frit_project_app.service.exception.DatabaseException;
+import com.kipper.frit_project_app.service.exception.HttpMessageNotReadableException;
+import com.kipper.frit_project_app.service.exception.HttpRequestMethodNotSupportedException;
 import com.kipper.frit_project_app.service.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -23,8 +25,9 @@ public class UserService {
         this.repository = repository;
     }
 
-    public List<User> findAll() {
-        return repository.findAll();
+    public List<UserDTO> findAll() {
+         return repository.findAll().stream().map(
+                user -> new UserDTO(user)).toList();
     }
 
     public User findById(Long id) {
@@ -43,14 +46,20 @@ public class UserService {
 
     public void deleteById(Long id) {
             try{
-                if (!repository.existsById(id)) {
-                throw new ResourceNotFoundException(id);
+                if(id == null || id <= 0) {
+                    throw new HttpMessageNotReadableException(id.toString());
+                }
+                else if (!repository.existsById(id)) {
+                    throw new ResourceNotFoundException(id);
                 }
                 repository.deleteById(id);
             }catch (EmptyResultDataAccessException e){
                  throw new ResourceNotFoundException(id);
-            }catch (DataIntegrityViolationException e){
+            }
+            catch (DataIntegrityViolationException e){
                 throw new DatabaseException(e.toString());
+            }catch (HttpRequestMethodNotSupportedException e){
+                throw new HttpMessageNotReadableException(e.toString());
             }
     }
 
@@ -62,11 +71,15 @@ public class UserService {
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(id);
         }
-    }
+    }//TODO: se o cara não passar nada
 
     private void updateData(User entity, User user) {
         entity.setName(user.getName());
-        entity.setEmail(user.getEmail());
+        Optional<User> obj = Optional.ofNullable(repository.findByEmail(user.getEmail()));
+        if(obj.isPresent()) {
+            throw new RuntimeException();
+        }
+            entity.setEmail(user.getEmail());
         entity.setPhone(user.getPhone());
     }
 }

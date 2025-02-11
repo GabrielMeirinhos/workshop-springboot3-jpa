@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Pattern;
 
 public record RegisterDTO(
         Long id,
-        String email,
+        @Email String email,
         String name,
         String password,
         String phone,

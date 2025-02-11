@@ -2,6 +2,7 @@ package com.kipper.frit_project_app.service;
 
 import com.kipper.frit_project_app.entities.user.RegisterDTO;
 import com.kipper.frit_project_app.entities.user.User;
+import com.kipper.frit_project_app.entities.user.UserDTO;
 import com.kipper.frit_project_app.repositories.UserRepository;
 import com.kipper.frit_project_app.service.exception.IllegalArgException;
 import jakarta.validation.Valid;
@@ -21,18 +22,15 @@ public class RegisterService {
     @Autowired
     private UserRepository repository;
 
-    public User register(@Valid RegisterDTO data) {
+    public User register(RegisterDTO data) {
             if (data.password().length() < 8) {
-                System.out.println("ENTROU AQUIIIIIIIIIIII");
                 throw new IllegalArgException();
             }
             String encodedPassword = new BCryptPasswordEncoder().encode(data.password());
 
-
             User newUser = new User(data.email(), data.name(), encodedPassword, data.phone(), data.role());
 
-            User user = this.repository.save(newUser);
-            return newUser;
 
+            return this.repository.save(newUser);
     }
 }

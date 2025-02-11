@@ -1,6 +1,7 @@
 package com.kipper.frit_project_app.resources;
 
 import com.kipper.frit_project_app.entities.Order;
+import com.kipper.frit_project_app.entities.dto.OrderDTO;
 import com.kipper.frit_project_app.service.OrderService;
 import com.kipper.frit_project_app.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +23,8 @@ public class OrderResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<Order>> findAll() {
-        List<Order> list = orderService.findAll();
+    public ResponseEntity<List<OrderDTO>> findAll() {
+        List<OrderDTO> list = orderService.findAll();
         return ResponseEntity.ok().body(list);
     }
 
