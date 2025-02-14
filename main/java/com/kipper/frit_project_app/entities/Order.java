@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import java.io.Serial;
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -85,8 +86,8 @@ public class Order implements java.io.Serializable {
         return items;
     }
 
-    public Set<OrderItemDTO> getItemsDTO() {
-        return items.stream().map(OrderItemDTO::new).collect(Collectors.toSet());
+    public List<OrderItemDTO> getItemsDTO() {
+        return items.stream().map(OrderItemDTO::new).toList();
     }
 
     public void setPayment(Payment payment) {

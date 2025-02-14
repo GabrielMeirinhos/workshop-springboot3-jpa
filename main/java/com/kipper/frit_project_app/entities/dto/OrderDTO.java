@@ -5,6 +5,7 @@ import com.kipper.frit_project_app.entities.enums.OrderStatus;
 
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Set;
 
 
@@ -14,7 +15,7 @@ public record OrderDTO(
         OrderStatus orderStatus,
         String clientName,
         String clientEmail,
-        Set<OrderItemDTO> items,
+        List<OrderItemDTO> items,
         Double total,
         PaymentDTO payment
 ) {

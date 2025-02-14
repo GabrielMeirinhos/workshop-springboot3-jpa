@@ -30,7 +30,7 @@ public class User implements UserDetails, Serializable {
     @Email
     private String email;
     private String name;
-    @JsonIgnore
+//    @JsonIgnore
     private String password;
     private String phone;
     private UserRole role;
@@ -84,7 +84,7 @@ public class User implements UserDetails, Serializable {
         this.phone = phone;
     }
 
-
+    @JsonIgnore
     public String getPassword() {
         return password;
     }

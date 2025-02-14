@@ -30,8 +30,6 @@ public class OrderService {
         ).toList();
     }
 
-//      return repository.findAll().stream().map(
-//            user -> new UserDTO(user.getName(), user.getEmail(), user.getPhone(), user.getRole())).toList();
     public Order findById(Long id) {
         try{
             if(!repository.existsById(id)){

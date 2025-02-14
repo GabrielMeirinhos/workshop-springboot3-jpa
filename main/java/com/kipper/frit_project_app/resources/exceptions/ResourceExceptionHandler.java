@@ -6,6 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 
 
 import java.lang.NullPointerException;
@@ -29,6 +32,13 @@ public class ResourceExceptionHandler {
         StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<StandardError> dataIntegrityViolationException(DataIntegrityViolationException e, HttpServletRequest request) {
+        String error = "Violação de integridade";
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
 
     @ExceptionHandler(IllegalArgException.class)
     public ResponseEntity<StandardError> illegalArgException(IllegalArgException e, HttpServletRequest request) {
@@ -41,7 +51,7 @@ public class ResourceExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<StandardError> handleBadRequest(HttpMessageNotReadableException e, HttpServletRequest request) {
         String error = "Requisição malformada";
-        HttpStatus status = HttpStatus.BAD_REQUEST;
+        HttpStatus status = HttpStatus.METHOD_NOT_ALLOWED;
         StandardError err = new StandardError(Instant.now(),status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
@@ -63,7 +73,7 @@ public class ResourceExceptionHandler {
     }
 
 @ExceptionHandler(NoSuchElementExceptio.class)
-    public ResponseEntity<StandardError> noSuchElementExceptio(NullPointerException e, HttpServletRequest request) {
+    public ResponseEntity<StandardError> noSuchElementException(NullPointerException e, HttpServletRequest request) {
         String error = "Elemento não encontrado";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
